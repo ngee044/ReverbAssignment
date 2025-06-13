@@ -6,11 +6,11 @@ namespace JUCEModule
 {
 	struct ReverbSettings
 	{
-		float room_size_ = 0.5f;
-		float damping_ = 0.5f;
-		float wet_level_ = 0.33f;
-		float dry_level_ = 0.4f;
-		float width_ = 1.0f;
+		float room_size_;
+		float damping_;
+		float wet_level_;
+		float dry_level_;
+		float width_;
 	};
 
 	class ReverbProcessor
