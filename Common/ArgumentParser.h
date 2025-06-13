@@ -18,15 +18,6 @@ namespace Common
 		auto program_folder(void) const -> std::string;
 
 		auto to_string(const std::string& key) const -> std::optional<std::string>;
-		auto to_array(const std::string& key) const -> std::optional<std::vector<std::string>>;
-
-		auto to_bool(const std::string& key) const -> std::optional<bool>;
-		auto to_short(const std::string& key) const -> std::optional<int16_t>;
-		auto to_ushort(const std::string& key) const -> std::optional<uint16_t>;
-		auto to_int(const std::string& key) const -> std::optional<int32_t>;
-		auto to_uint(const std::string& key) const -> std::optional<uint32_t>;
-		auto to_long(const std::string& key) const -> std::optional<int64_t>;
-		auto to_ulong(const std::string& key) const -> std::optional<uint64_t>;
 
 	protected:
 		auto parse(int32_t argc, char* argv[]) -> std::map<std::string, std::string>;
