@@ -1,0 +1,13 @@
+{
+    "dependencies": [
+      "lz4",
+      "fmt",
+      "boost-json",
+      "boost-dll",
+      "boost-system",
+      "boost-filesystem",
+      "libplist",
+      "mpg123",
+      "juce"
+    ]
+  }
