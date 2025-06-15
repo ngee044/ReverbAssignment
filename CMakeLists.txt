@@ -13,8 +13,15 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
+option(QT_FRONTEND_OPTION "Frontend QT Application" ON)
+
 project(${PROJECT_NAME} VERSION 1.0.0.0)
 
 add_subdirectory(JUCEModule)
 add_subdirectory(Common)
 add_subdirectory(ReverbApp)
+
+add_subdirectory(Frontend-qt)
+if (QT_FRONTEND_OPTION)
+add_subdirectory(Frontend-qt)
+endif()

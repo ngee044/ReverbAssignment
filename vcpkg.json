@@ -8,6 +8,7 @@
       "boost-filesystem",
       "libplist",
       "mpg123",
+      "qt",
       "juce"
     ]
   }
