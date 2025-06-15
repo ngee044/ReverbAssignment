@@ -21,7 +21,6 @@ add_subdirectory(JUCEModule)
 add_subdirectory(Common)
 add_subdirectory(ReverbApp)
 
-add_subdirectory(Frontend-qt)
 if (QT_FRONTEND_OPTION)
 add_subdirectory(Frontend-qt)
 endif()
