@@ -110,17 +110,21 @@ auto main(int argc, char* argv[]) -> int
 		const unsigned int hardware_threads = std::thread::hardware_concurrency();
 		auto thread_count = std::clamp(hardware_threads, thread_min_count_, thread_max_count_);
 		juce::ThreadPool thread_pool(thread_count);
+		std::vector<ReverbJob*> jobs;
 
 		for (auto& file : input_files)
 		{
-			//std::cout << "Adding job for file: " << file.getFullPathName() << std::endl;
 			juce::File output_file = output_folder.getChildFile(file.getFileNameWithoutExtension() + "_reverb.wav");
-			//std::cout << "Output file: " << output_file.getFullPathName() << std::endl;
-			std::this_thread::sleep_for(std::chrono::milliseconds(500)); // Simulate some delay for job submission
-			thread_pool.addJob(new ReverbJob(file, output_file, settings), true);
+			auto* job = new ReverbJob(file, output_file, settings);
+			jobs.push_back(job);
+			thread_pool.addJob(job, true);
 		}
 
-		thread_pool.removeAllJobs(true, 30000); // Wait for jobs to finish with a timeout of 30 seconds
+		for (auto* job : jobs)
+		{
+			thread_pool.waitForJobToFinish(job, 10000);
+		}
+
 		std::cout << "All files processed.\n";
 		if (thread_pool.getNumJobs() > 0)
 		{
