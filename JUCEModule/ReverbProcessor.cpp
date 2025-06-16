@@ -5,11 +5,11 @@ namespace JUCEModule
 	static auto convert_settings(const ReverbSettings &s) -> juce::dsp::Reverb::Parameters
 	{
 		juce::dsp::Reverb::Parameters p;
-		p.roomSize = s.room_size_;
-		p.damping = s.damping_;
-		p.wetLevel = s.wet_level_;
-		p.dryLevel = s.dry_level_;
-		p.width = s.width_;
+		p.roomSize = s.room_size_ / 100;
+		p.damping = s.damping_ / 100;
+		p.wetLevel = s.wet_level_ / 100;
+		p.dryLevel = s.dry_level_ / 100;
+		p.width = s.width_ / 100;
 		return p;
 	}
 
