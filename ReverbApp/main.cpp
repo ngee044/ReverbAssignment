@@ -202,13 +202,13 @@ auto parse_arguments(ArgumentParser& arguments) -> void
 	auto target = arguments.to_string("--input_folder");
 	if (target != std::nullopt)
 	{
-		input_file_ = target.value();
+		input_folder_ = target.value();
 	}
 
 	target = arguments.to_string("--output_folder");
 	if (target != std::nullopt)
 	{
-		output_file_ = target.value();
+		output_folder_= target.value();
 	}
 	
 	target = arguments.to_string("--input_file");
