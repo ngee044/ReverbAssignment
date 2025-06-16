@@ -51,7 +51,11 @@ func updateProgress(id string, pct int) {
 func markDone(id string, errStr string) {
 	mu.Lock()
 	if j, ok := table[id]; ok {
-		j.Progress = 100
+		if errStr == "" {
+			j.Progress = 100
+		} else {
+			j.Progress = -1
+		}
 		j.Done = true
 		j.Err = errStr
 	}

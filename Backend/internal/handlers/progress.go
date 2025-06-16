@@ -7,11 +7,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type progressRes struct {
+	Progress int `json:"progress"`
+}
+
 func GetProgress(c *gin.Context) {
 	id := c.Param("id")
+
 	if j, ok := jobs.GetJob(id); ok {
-		c.JSON(http.StatusOK, j)
-	} else {
-		c.JSON(http.StatusNotFound, gin.H{"error": "not found"})
+		c.JSON(http.StatusOK, progressRes{Progress: j.Progress})
+		return
 	}
+
+	c.JSON(http.StatusNotFound, gin.H{"error": "not found"})
 }

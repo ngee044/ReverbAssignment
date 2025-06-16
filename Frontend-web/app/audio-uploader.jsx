@@ -58,9 +58,11 @@ export default function AudioUploader() {
     setError(null);
 
     try {
-      const job_id = await postRenderApi(files, reverbParams);
+      const job_id = await postRenderApi(
+        files.map((f) => f.file),
+        reverbParams
+      );
       setJobId(job_id);
-      alert(`작업이 시작되었습니다. Job ID: ${job_id}`);
     } catch (e) {
       setError(e.message);
     } finally {

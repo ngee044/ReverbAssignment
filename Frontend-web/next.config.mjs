@@ -6,16 +6,16 @@ const nextConfig = {
     async rewrites() {
         return [
             {
-                source: '/api/render',
-                destination: 'http://localhost:8000/api/render',
+                source: '/api/render/:job_id/result',
+                destination: 'http://localhost:8080/api/render/:job_id/result',
             },
             {
                 source: '/api/render/:job_id',
-                destination: 'http://localhost:8000/api/render/:job_id',
+                destination: 'http://localhost:8080/api/render/:job_id',
             },
             {
-                source: '/api/render/:job_id/result',
-                destination: 'http://localhost:8000/api/render/:job_id/result',
+                source: '/api/render',
+                destination: 'http://localhost:8080/api/render',
             },
             {
                 source: "/healthz",

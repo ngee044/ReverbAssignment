@@ -1,15 +1,11 @@
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8080"; 
+const API_BASE = "http://localhost:8080"; 
 
 export async function postRenderApi(files, reverbParams) {
     const formData = new FormData();
 
     files.forEach((item, idx) => {
-      let file = item;
-
-      if (!(file instanceof File) && item.originFileObj) {
-        file = item.originFileObj;
-      }
+      const file = item instanceof File ? item : item.file || item.originFileObj;
 
       if (file instanceof File) {
         formData.append("files", file, file.name);
@@ -20,12 +16,8 @@ export async function postRenderApi(files, reverbParams) {
 
     formData.append("params", JSON.stringify(reverbParams));
 
-    const res = await fetch("/api/render", { method: "POST", body: formData });
-
-    if (!res.ok) {
-      const msg = await res.text();
-      throw new Error(`API 요청 실패: ${res.status} / ${msg}`);
-    }
+    const res = await fetch(`${API_BASE}/api/render`, { method: "POST", body: formData });
+    if (!res.ok) throw new Error(await res.text());
     return (await res.json()).job_id;
   }
   
@@ -39,9 +31,8 @@ export async function postRenderApi(files, reverbParams) {
       throw new Error("진행률 조회 실패");
     }
   
-    const data = await res.json();
-    // 예: { progress: 0~100 } 반환 예상
-    return data.progress;
+    const { progress } = await res.json();
+    return progress ?? 0;
   }
   
   // 3. GET /api/render/{job_id}/result - 처리된 WAV 다운로드
@@ -55,18 +46,10 @@ export async function postRenderApi(files, reverbParams) {
     }
 
     const cd = res.headers.get("contnent-disposition") || "";
-    const filename =- cd.match(/filename="(.+?)"/)?.[1] || `result_${job_id}.wav`;
+    const match = cd.match(/filename="?(.+?)"?$/);
+    const filename = match ? match[1] : `result_${job_id}.wav`;
+
     const blob = await res.blob();
-  
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    // document.body.appendChild(a);
-    a.click();
-    a.remove();
-    window.URL.revokeObjectURL(url);
-    
-    return filename;
+    return { blob, filename };
   }
   

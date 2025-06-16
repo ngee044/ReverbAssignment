@@ -26,6 +26,11 @@ func StartJob(c *gin.Context) (string, error) {
 	}
 
 	files := form.File["files"]
+
+	if len(files) == 0 {
+		files = form.File["files[]"]
+	}
+
 	if len(files) == 0 {
 		return "", errors.New("files field missing")
 	}
@@ -97,11 +102,11 @@ func execAndTrack(id string, args []string, zipTarget string) {
 
 	err := cmd.Wait()
 	if err == nil && zipTarget != "" {
-		srcDir := strings.TrimSuffix(zipTarget, "result.zip") + "out"
+		srcDir := filepath.Dir(zipTarget) + string(os.PathSeparator) + "out"
 		_ = util.ZipFolder(srcDir, zipTarget)
 	}
 
-	errStr := ""
+	var errStr string
 	if err != nil {
 		errStr = err.Error()
 	}
