@@ -113,7 +113,10 @@ auto main(int argc, char* argv[]) -> int
 
 		for (auto& file : input_files)
 		{
+			//std::cout << "Adding job for file: " << file.getFullPathName() << std::endl;
 			juce::File output_file = output_folder.getChildFile(file.getFileNameWithoutExtension() + "_reverb.wav");
+			//std::cout << "Output file: " << output_file.getFullPathName() << std::endl;
+			std::this_thread::sleep_for(std::chrono::milliseconds(500)); // Simulate some delay for job submission
 			thread_pool.addJob(new ReverbJob(file, output_file, settings), true);
 		}
 
