@@ -11,11 +11,11 @@ import RenderResultPlayer from "./render-result-player";
 export default function AudioUploader() {
   const [files, setFiles] = useState([]);
   const [reverbParams, setReverbParams] = useState({
-    RoomSize: 50,
-    Damping: 50,
-    WetLevel: 50,
-    DryLevel: 50,
-    Width: 50,
+    roomSize: 50,
+    damping: 50,
+    wetLevel: 50,
+    dryLevel: 40,
+    width: 50,
   });
   const [jobId, setJobId] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -40,7 +40,7 @@ export default function AudioUploader() {
   };
 
   const onFileInputChange = (e) => {
-    handleFiles(e.target.files);
+    handleFiles(Array.from(e.target.files));
   };
 
   const onDrop = (e) => {

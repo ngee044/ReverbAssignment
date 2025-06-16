@@ -44,11 +44,6 @@ export default function RenderProgress({ jobId, onComplete }) {
             <p>진행률: {progress}%</p>
             <Progress value={progress} className="w-full" /> 
         </div>}
-      {progress >= 100 && (
-        <Button onClick={() => downloadRenderResult(jobId)}>
-          처리된 WAV 다운로드
-        </Button>
-      )}
     </div>
   );
 }
