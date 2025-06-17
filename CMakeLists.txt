@@ -22,5 +22,6 @@ add_subdirectory(Common)
 add_subdirectory(ReverbApp)
 
 if (QT_FRONTEND_OPTION)
+message(STATUS "Building QT Frontend")
 add_subdirectory(Frontend-qt)
 endif()

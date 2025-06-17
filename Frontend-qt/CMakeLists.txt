@@ -17,12 +17,12 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Core Multimedia)
 set(SOURCES
     main.cpp
 
-	MainWindows.cpp
-	MainWindows.h
-	MainWindows.ui
+	Widgets/MainWindow.cpp
+	Widgets/MainWindow.h
+	Widgets/MainWindow.ui
 )
 
-add_executable(${PROGRAM_NAME} ${SOURCES})
+add_executable(${PROGRAM_NAME} WIN32 ${SOURCES})
 
 if (WIN32)
     target_link_options(${PROGRAM_NAME} PRIVATE
@@ -38,10 +38,8 @@ if (WIN32)
     endif()
 endif()
 
-target_include_directories(${PROGRAM_NAME} PRIVATE Core QWidgets)
+target_include_directories(${PROGRAM_NAME} PRIVATE Core QWidgets Widgets Core)
 target_link_libraries(${PROGRAM_NAME} PRIVATE 
     Qt${QT_VERSION_MAJOR}::Widgets 
     Qt${QT_VERSION_MAJOR}::Core 
     Qt${QT_VERSION_MAJOR}::Multimedia)
-
-

@@ -9,6 +9,7 @@
       "libplist",
       "mpg123",
       "qtbase",
+      "qtmultimedia",
       "juce"
     ]
   }
