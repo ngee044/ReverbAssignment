@@ -22,6 +22,9 @@ build/
 #cmake-build-*
 
 
+/Backend/*.zip
+
+
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
@@ -33,6 +36,7 @@ build/
 /Frontend-web/!.yarn/plugins
 /Frontend-web/!.yarn/releases
 /Frontend-web/!.yarn/versions
+/Frontend-web/*.zip
 
 # testing
 /Frontend-web/coverage
