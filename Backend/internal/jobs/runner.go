@@ -13,8 +13,6 @@ import (
 	"strconv"
 	"strings"
 
-	"reverb/backend-gin/internal/util"
-
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
@@ -65,9 +63,8 @@ func StartJob(c *gin.Context) (string, error) {
 		newJob(id, outFile)
 		go runSingle(id, savedPaths[0], outFile, p)
 	} else {
-		zipPath := filepath.Join(workDir, id, "result.zip")
-		newJob(id, zipPath)
-		go runBatch(id, inDir, outDir, zipPath, p)
+		newJob(id, outDir)
+		go runBatch(id, inDir, outDir, p)
 	}
 
 	return id, nil
@@ -80,36 +77,32 @@ func runSingle(id, inFile, outFile string, p ReverbParams) {
 		"--wet", f(p.WetLevel), "--dry", f(p.DryLevel), "--width", f(p.Width),
 	}
 	fmt.Printf("Running reverb for job %s with args: %v\n", id, args)
-	execAndTrack(id, args, "")
+	execAndTrack(id, args)
 }
 
-func runBatch(id, inDir, outDir, zipPath string, p ReverbParams) {
+func runBatch(id, inDir, outDir string, p ReverbParams) {
 	args := []string{
 		"--input_folder", inDir, "--output_folder", outDir,
 		"--room", f(p.RoomSize), "--damp", f(p.Damping),
 		"--wet", f(p.WetLevel), "--dry", f(p.DryLevel), "--width", f(p.Width),
 	}
 	fmt.Printf("Running batch reverb for job %s with args: %v\n", id, args)
-	execAndTrack(id, args, zipPath)
+	execAndTrack(id, args)
 }
 
-func execAndTrack(id string, args []string, zipTarget string) {
+func execAndTrack(id string, args []string) {
 	cmd := exec.Command("./ReverbApp", args...)
 	stdout, _ := cmd.StdoutPipe()
 	_ = cmd.Start()
 
 	go parseProgress(id, stdout)
 
-	err := cmd.Wait()
-	if err == nil && zipTarget != "" {
-		srcDir := filepath.Dir(zipTarget) + string(os.PathSeparator) + "out"
-		_ = util.ZipFolder(srcDir, zipTarget)
-	}
-
 	var errStr string
+	err := cmd.Wait()
 	if err != nil {
 		errStr = err.Error()
 	}
+
 	markDone(id, errStr)
 }
 

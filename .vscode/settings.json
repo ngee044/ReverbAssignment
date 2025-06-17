@@ -96,6 +96,9 @@
         "regex": "cpp",
         "stack": "cpp",
         "stdfloat": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "random": "cpp",
+        "span": "cpp",
+        "stacktrace": "cpp"
     }
 }

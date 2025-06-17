@@ -11,17 +11,21 @@ export default function RenderResultPlayer({ jobId }) {
 
   async function handleDownloadAndPlay() {
     try {
-      const { blob } = await downloadRenderResult(jobId);
-      const url = URL.createObjectURL(blob);
+      const { blob, filename, mime } = await downloadRenderResult(jobId);
 
-      if (prevUrl.current) {
-        URL.revokeObjectURL(prevUrl.current);
+      const url = URL.createObjectURL(mime.startsWith("audio/") ? new Blob([blob], { type: mime }) : blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      a.click();
+
+      if (mime.startsWith("audio/")) {
+        setAudioUrl(url);
       }
-      prevUrl.current = url;
-      setAudioUrl(url);
 
-    } catch (error) {
-      alert(error.message);
+    } catch (e) {
+      setError("e.message : 결과 다운로드에 실패했습니다.");
     }
   }
 
@@ -57,7 +61,7 @@ export default function RenderResultPlayer({ jobId }) {
   return (
     <div className="space-y-4 mt-4">
       <Button className="w-full h-12" onClick={handleDownloadAndPlay} disabled={!jobId}>
-        결과 듣기
+        결과 듣기 & 다운로드
       </Button>
         <audio
           ref={audioRef}

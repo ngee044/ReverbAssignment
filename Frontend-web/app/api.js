@@ -45,11 +45,11 @@ export async function postRenderApi(files, reverbParams) {
       throw new Error("결과 다운로드 실패");
     }
 
-    const cd = res.headers.get("contnent-disposition") || "";
-    const match = cd.match(/filename="?(.+?)"?$/);
-    const filename = match ? match[1] : `result_${job_id}.wav`;
+    const cd  = res.headers.get("content-disposition") || "";
+    const name = cd.match(/filename="?(.+?)"?$/)?.[1] || `result_${jobId}`;
 
+    const mime = res.headers.get("content-type") || "application/octet-stream";
     const blob = await res.blob();
-    return { blob, filename };
+    return { blob, filename: name, mime };
   }
   
