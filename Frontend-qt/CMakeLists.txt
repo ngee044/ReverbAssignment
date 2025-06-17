@@ -17,6 +17,11 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Core Multimedia)
 set(SOURCES
     main.cpp
 
+    Core/ReverbSetting.hpp
+
+    Widgets/DragDropWidget.cpp
+    Widgets/DragDropWidget.h
+
 	Widgets/MainWindow.cpp
 	Widgets/MainWindow.h
 	Widgets/MainWindow.ui

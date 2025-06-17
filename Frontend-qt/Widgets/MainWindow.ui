@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="DragAndDropWidget" native="true">
+   <widget class="DragDropWidget" name="DragAndDropWidget" native="true">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -50,17 +50,17 @@
      <string>렌더링 시작</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="ResultButton">
+   <widget class="QPushButton" name="ResultPlayButton">
     <property name="geometry">
      <rect>
       <x>100</x>
       <y>320</y>
-      <width>551</width>
+      <width>261</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>결과 듣기 &amp;&amp; 다운로드</string>
+     <string>결과 듣기</string>
     </property>
    </widget>
    <widget class="QWidget" name="ItemListWidget" native="true">
@@ -76,8 +76,8 @@
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>370</y>
+      <x>210</x>
+      <y>460</y>
       <width>297</width>
       <height>127</height>
      </rect>
@@ -93,7 +93,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QSlider" name="verticalSlider">
+        <widget class="QSlider" name="RoomSizeSlider">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -111,7 +111,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QSlider" name="verticalSlider_2">
+        <widget class="QSlider" name="DampingSlider">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -129,7 +129,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QSlider" name="verticalSlider_3">
+        <widget class="QSlider" name="WetLevelSlider">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -147,7 +147,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QSlider" name="verticalSlider_4">
+        <widget class="QSlider" name="DryLevelSlider">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -165,7 +165,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QSlider" name="verticalSlider_5">
+        <widget class="QSlider" name="WidthSlider">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -175,9 +175,43 @@
      </item>
     </layout>
    </widget>
+   <widget class="QProgressBar" name="RenderProgressBar">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>430</y>
+      <width>271</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>0</number>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="ResultSaveButton">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>320</y>
+      <width>261</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>다운로드</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DragDropWidget</class>
+   <extends>QWidget</extends>
+   <header>DragDropWidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
