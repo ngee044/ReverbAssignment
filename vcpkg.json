@@ -11,6 +11,6 @@
       "qtbase",
       "qtmultimedia",
       "juce",
-      "spdlog" 
+      "spdlog"
     ]
   }

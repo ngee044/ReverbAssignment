@@ -2,6 +2,10 @@
 #include "ReverbProcessor.h"
 #include "ArgumentParser.h"
 
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/basic_file_sink.h>
+#include <chrono>
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -17,6 +21,7 @@ auto signal_callback(int32_t signum) -> void;
 
 auto parse_arguments(ArgumentParser& arguments) -> void;
 auto setup_reverb_settings(ReverbSettings& settings) -> void;
+auto init_logger(std::string log_file_name) -> void;
 
 float room_size_ = 0.7f;
 float damping_ = 0.5f;
@@ -43,12 +48,15 @@ class ReverbJob : public juce::ThreadPoolJob
 
 	auto runJob() -> JobStatus override
 	{
+		auto t0 = std::chrono::steady_clock::now();
 		ReverbProcessor processor;
 		auto [result, error] = processor.process_file(read_file_.getFullPathName().toStdString(), write_file_.getFullPathName().toStdString(), settings_);
+		auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - t0).count();
 		if (!result)
 		{
 			std::cout << "Error processing file: " << (error ? error.value() : "unknown error") << std::endl;
 		}
+		spdlog::info("{} → {} ({} ms)", read_file_.getFullPathName().toStdString(), write_file_.getFullPathName().toStdString(), ms);
 
 		return jobHasFinished;
 	}
@@ -61,6 +69,12 @@ class ReverbJob : public juce::ThreadPoolJob
 
 auto main(int argc, char* argv[]) -> int
 {
+	int file_count = 0;
+	auto batch_start = std::chrono::steady_clock::now();
+
+	std::string log_file_name = std::string("ReverbApp_") + std::to_string(std::chrono::system_clock::now().time_since_epoch().count()) + ".log";
+	init_logger(log_file_name);
+
 	ArgumentParser arguments(argc, argv);
 	parse_arguments(arguments);
 
@@ -95,6 +109,7 @@ auto main(int argc, char* argv[]) -> int
 			std::cout << "No audio files found in the input folder.\n";
 			return -1;
 		}
+		file_count = input_files.size();
 
 		ReverbSettings settings;
 		setup_reverb_settings(settings);
@@ -147,7 +162,7 @@ auto main(int argc, char* argv[]) -> int
 		ReverbSettings settings;
 		setup_reverb_settings(settings);
 
-
+		file_count = 1;
 		std::cout << "Processing file: " << input_file_ << " to " << output_file_ << std::endl;
 		std::cout << "Settings: "
 			<< "Room Size: " << settings.room_size_ << ", "
@@ -157,14 +172,22 @@ auto main(int argc, char* argv[]) -> int
 			<< "Width: " << settings.width_ << std::endl;
 
 		ReverbProcessor processor;
+		auto t0 = std::chrono::steady_clock::now();
 		auto [result, error] = processor.process_file(input_file_, output_file_, settings);
+		auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - t0).count();
 		if (!result)
 		{
 			std::cout << "Error processing file: " << (error ? error.value() : "unknown error") << std::endl;
+			spdlog::error("{} → {})", input_file_, error ? error.value() : "unknown");
 			return -1;
 		}
+		
+		spdlog::info("{} → {} ({} ms)", input_file_, output_file_, ms);
+
 	}
 
+	auto total_ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - batch_start).count();
+	spdlog::info("Total processing time: {} ms, files: {}", total_ms, file_count);
 	register_signal();
 
 	return 0;
@@ -259,4 +282,18 @@ auto parse_arguments(ArgumentParser& arguments) -> void
 	{
 		width_ = (float)atof(target.value().c_str());
 	}
+}
+
+auto init_logger(std::string log_file_name) -> void
+{
+	auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(log_file_name, true);
+
+	auto logger = std::make_shared<spdlog::logger>("RVB", file_sink);
+	logger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%l] [thread %t] %v");
+	spdlog::set_default_logger(logger);
+	spdlog::set_level(spdlog::level::info);
+	spdlog::flush_on(spdlog::level::info);
+
+	spdlog::info("ReverbApp started with log file: {}", log_file_name);
+
 }

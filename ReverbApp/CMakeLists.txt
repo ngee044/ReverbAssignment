@@ -15,7 +15,9 @@ project(${PROGRAM_NAME} VERSION 1.0.0.0)
 
 add_executable(${PROGRAM_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 
-target_link_libraries(${PROGRAM_NAME} PUBLIC JUCEModule Common)
+find_package(spdlog REQUIRED)
+
+target_link_libraries(${PROGRAM_NAME} PUBLIC JUCEModule Common spdlog::spdlog)
 target_include_directories(${PROGRAM_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
 
 
