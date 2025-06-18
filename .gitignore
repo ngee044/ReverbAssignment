@@ -37,6 +37,7 @@ build/
 /Frontend-web/!.yarn/releases
 /Frontend-web/!.yarn/versions
 /Frontend-web/*.zip
+/Frontend-web/package-lock.json
 
 # testing
 /Frontend-web/coverage
