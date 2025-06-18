@@ -72,3 +72,4 @@ build/
 
 # Contentlayer
 /Frontend-web/.contentlayer
+Frontend-web/package-lock.json
