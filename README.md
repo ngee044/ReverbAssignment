@@ -50,7 +50,8 @@ npm run dev
 ## 🔧 Config
 | Env Var      | Default           | Description         |
 | ------------ | ----------------- | --------------------|
-| `REVERB_BIN` | `./bin/ReverbApp` | DSP executable      |
+| `BE_BIN`     | `./backend`       | backend executable  |
+| `REVERB_BIN` | `./ReverbApp`     | DSP executable      |
 | `TEMP_ROOT`  | `./tmp/reverb`    | per-job scratch     |
 | `THREADS`    | `2 ~ 5`           | ReverbApp pool size |
 | `PORT`       | `8080`            | API listen port     |
