@@ -10,6 +10,7 @@
       "mpg123",
       "qtbase",
       "qtmultimedia",
-      "juce"
+      "juce",
+      "spdlog" 
     ]
   }
