@@ -56,10 +56,11 @@ npm run dev
 | `PORT`       | `8080`            | API listen port     |
 
 ## Performance Profiling Report
+* PC Hardware: intel i7-10700K 3.80GHz (16CPU), RAM 32GB, GTX 2060 super, SSD
+  
 ### 1. ReverbApp
-Hardware: intel i7-10700K 3.80GHz (16CPU), RAM 32GB, GTX 2060 super, SSD
-input sample: 120s, 24bit 44.1kHz stero WAV (≈30MB)
-thread pool count: min thread = 2, max trhead = 5
+* input sample: 120s, 24bit 44.1kHz stero WAV (≈30MB)
+* thread pool count: min thread = 2, max trhead = 5
 
 | Files | Batch time (ms)    | Avg / file (ms)    | Min | Max |   Through-put (files / s)  |
 | ----: | -----------------: | -----------------: | --: | --: | -------------------------: |
@@ -69,6 +70,9 @@ thread pool count: min thread = 2, max trhead = 5
 |    10 |              1,010 |                470 | 435 | 510 |                   **9.9**  |
 
 ### 2. API-layer
+* localhost
+* backend: go lang(gin)
+* frontend: qt, react
 | Request Files | POST `/api/render` | GET `/…/result` | API 오버헤드 합계 |
 | :------------ | -----------------: | --------------: | ----------: |
 | 1             |             118 ms |          112 ms |      230 ms |
