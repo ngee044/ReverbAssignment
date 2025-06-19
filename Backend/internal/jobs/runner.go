@@ -76,7 +76,6 @@ func runSingle(id, inFile, outFile string, p ReverbParams) {
 		"--room", f(p.RoomSize), "--damp", f(p.Damping),
 		"--wet", f(p.WetLevel), "--dry", f(p.DryLevel), "--width", f(p.Width),
 	}
-	fmt.Printf("Running reverb for job %s with args: %v\n", id, args)
 	execAndTrack(id, args)
 }
 
@@ -86,7 +85,6 @@ func runBatch(id, inDir, outDir string, p ReverbParams) {
 		"--room", f(p.RoomSize), "--damp", f(p.Damping),
 		"--wet", f(p.WetLevel), "--dry", f(p.DryLevel), "--width", f(p.Width),
 	}
-	fmt.Printf("Running batch reverb for job %s with args: %v\n", id, args)
 	execAndTrack(id, args)
 }
 
