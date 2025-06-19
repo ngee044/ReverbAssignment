@@ -1,7 +1,6 @@
 package jobs
 
 import (
-	"bufio"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -90,10 +89,9 @@ func runBatch(id, inDir, outDir string, p ReverbParams) {
 
 func execAndTrack(id string, args []string) {
 	cmd := exec.Command("./ReverbApp", args...)
-	stdout, _ := cmd.StdoutPipe()
 	_ = cmd.Start()
 
-	go parseProgress(id, stdout)
+	go parseProgress(id)
 
 	var errStr string
 	err := cmd.Wait()
@@ -104,15 +102,26 @@ func execAndTrack(id string, args []string) {
 	markDone(id, errStr)
 }
 
-func parseProgress(id string, r io.Reader) {
-	scanner := bufio.NewScanner(r)
-	for scanner.Scan() {
-		if strings.HasPrefix(scanner.Text(), "PROGRESS") {
-			var pct int
-			fmt.Sscanf(scanner.Text(), "PROGRESS %d", &pct)
-			updateProgress(id, pct)
-		}
+func parseProgress(id string) {
+	inDir := filepath.Join("tmp", "reverb", id, "in")
+	outDir := filepath.Join("tmp", "reverb", id, "out")
+
+	inFiles, _ := filepath.Glob(filepath.Join(inDir, "*"))
+	outFiles, _ := filepath.Glob(filepath.Join(outDir, "*.wav"))
+
+	total := len(inFiles)
+	if total == 0 {
+		updateProgress(id, 0)
+		return
 	}
+
+	done := len(outFiles)
+	pct := int(float64(done) / float64(total) * 100)
+	if pct > 100 {
+		pct = 100
+	}
+
+	updateProgress(id, pct)
 }
 
 func saveFile(fh *multipart.FileHeader, dst string) error {
