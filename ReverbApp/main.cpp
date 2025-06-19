@@ -122,7 +122,7 @@ auto main(int argc, char* argv[]) -> int
 			<< "Dry Level: " << settings.dry_level_ << ", "
 			<< "Width: " << settings.width_ << std::endl;
 
-		const unsigned int hardware_threads = std::thread::hardware_concurrency();
+		const unsigned int hardware_threads = std::thread::hardware_concurrency() - 1;
 		auto thread_count = std::clamp(hardware_threads, thread_min_count_, thread_max_count_);
 		juce::ThreadPool thread_pool(thread_count);
 		std::vector<ReverbJob*> jobs;
