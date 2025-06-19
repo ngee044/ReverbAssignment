@@ -103,8 +103,8 @@ func execAndTrack(id string, args []string) {
 }
 
 func parseProgress(id string) {
-	inDir := filepath.Join("tmp", "reverb", id, "in")
-	outDir := filepath.Join("tmp", "reverb", id, "out")
+	inDir := filepath.Join(workDir, id, "in")
+	outDir := filepath.Join(workDir, id, "out")
 
 	inFiles, _ := filepath.Glob(filepath.Join(inDir, "*"))
 	outFiles, _ := filepath.Glob(filepath.Join(outDir, "*.wav"))
